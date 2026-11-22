@@ -1,0 +1,10 @@
+{
+    "python.defaultInterpreterPath": "d:\\Software projects\\AUlaf\\venv\\Scripts\\python.exe",
+    "python.venvPath": "d:\\Software projects\\AUlaf",
+    "python.venvFolders": [
+        "venv"
+    ],
+    "python.analysis.extraPaths": [
+        "d:\\Software projects\\AUlaf\\venv\\Lib\\site-packages"
+    ]
+}
