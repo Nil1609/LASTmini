@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function GET() {
     try {
+        // Direct test query to verify Supabase connectivity
+        const { data: testData, error: testError } = await supabaseAdmin.from('lost_reports').select('id').limit(1);
+
         const client = await clientPromise;
         const db = client.db('aulaf_database');
         
@@ -61,9 +65,18 @@ export async function GET() {
             totalArchived: recoveredLost + recoveredFound
         };
         
-        return NextResponse.json({ stats, recent_reports: recentReports });
+        return NextResponse.json({ 
+            stats, 
+            recent_reports: recentReports,
+            _debug: {
+                testDataCount: testData?.length || 0,
+                testError: testError ? testError.message : null,
+                supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'set' : 'default',
+                serviceKey: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'set' : 'default'
+            }
+        });
     } catch (error) {
         console.error("Stats API Error:", error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
     }
 }
