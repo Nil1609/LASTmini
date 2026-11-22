@@ -8,8 +8,8 @@ export const revalidate = 0;
 export async function GET() {
   const result = {
     env: {
-      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'DEFINED' : 'UNDEFINED (using fallback)',
-      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? 'DEFINED' : 'UNDEFINED (using fallback)'
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL || 'UNDEFINED',
+      SUPABASE_SERVICE_ROLE_KEY_PREFIX: (process.env.SUPABASE_SERVICE_ROLE_KEY || '').substring(0, 20) + '...'
     },
     rawSupabase: null,
     dbAdapter: null
